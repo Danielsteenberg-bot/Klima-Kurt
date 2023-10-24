@@ -17,3 +17,6 @@ https://blog.arduino.cc/2023/02/16/instantly-understand-40-languages-with-speech
 #Cheat Sheet
 https://docs.arduino.cc/tutorials/mkr-iot-carrier/mkr-iot-carrier-01-technical-reference
 
+#Link til en slags version:
+https://www.youtube.com/watch?v=QphKhB2MtFs
+
