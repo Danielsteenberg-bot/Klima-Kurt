@@ -20,3 +20,5 @@ https://docs.arduino.cc/tutorials/mkr-iot-carrier/mkr-iot-carrier-01-technical-r
 #Link til en slags version:
 https://www.youtube.com/watch?v=QphKhB2MtFs
 
+#Link til en guide over hvordan vi laver API + DB
+
