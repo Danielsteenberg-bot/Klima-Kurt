@@ -1,5 +1,6 @@
-# Klima-Kurt
-School IoT project making a home controller with speech to text like Jarvis in Iron man
+# 
+Dette er et IoT produkt/projekt lavet på Mercantec.
+Vores produkt kan se hvis der forgår noget ved din dør og give dig besked som du kan reagere på og igennem.
 
 
 #Vigtige links:
