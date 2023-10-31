@@ -1,112 +1,91 @@
 #include <Arduino_MKRIoTCarrier.h>
+#include "visuals.h"
+#include "pitches.h" 
 
 MKRIoTCarrier carrier;
 
+uint32_t colorRed = carrier.leds.Color(200, 0, 0);
+uint32_t colorGreen = carrier.leds.Color(0, 200, 0);
+uint32_t colorBlue = carrier.leds.Color(0, 0, 200);
+
+
+int noteDurations[] = {
+  4, 4, 4, 4, 4, 2, 8, 8, 8, 8, 8, 4, 4, 4, 4, 4, 2, 8, 8, 8, 8, 8, 4, 4, 4, 4, 4,
+  2, 8, 8, 8, 8, 8, 4, 4, 4, 4, 4, 2, 8, 8, 8, 8, 8, 4, 4, 4, 4, 4, 2, 8, 8, 8, 8, 8,
+  4, 4, 4, 4, 4, 2, 8, 8, 8, 8, 8, 4, 4, 4, 4, 4, 2, 8, 8, 8, 8, 8, 4, 4, 4, 4, 4,
+  2, 8, 8, 8, 8, 8, 4, 4, 4, 4, 4, 2, 8, 8, 8, 8, 8, 4, 4, 4, 4, 4, 2, 8, 8, 8, 8, 8
+};
+int finalMelody[] = {
+  NOTE_E3, NOTE_G3, NOTE_A3, NOTE_B3, NOTE_G3, NOTE_E3, NOTE_G3, NOTE_FS3, NOTE_E3, NOTE_G3,
+  NOTE_A3, NOTE_B3, NOTE_A3, NOTE_G3, NOTE_E3, NOTE_A3, NOTE_B3, NOTE_C4, NOTE_D4, NOTE_B3,
+  NOTE_A3, NOTE_G3, NOTE_FS3, NOTE_G3, NOTE_A3, NOTE_B3, NOTE_C4, NOTE_D4, NOTE_E3, NOTE_G3,
+  NOTE_E3, NOTE_G3, NOTE_A3, NOTE_B3, NOTE_G3, NOTE_E3, NOTE_G3, NOTE_FS3, NOTE_E3, NOTE_G3,
+  NOTE_A3, NOTE_B3, NOTE_A3, NOTE_G3, NOTE_E3, NOTE_A3, NOTE_B3, NOTE_C4, NOTE_D4, NOTE_B3,
+  NOTE_A3, NOTE_G3, NOTE_FS3, NOTE_G3, NOTE_A3, NOTE_B3, NOTE_C4, NOTE_D4, NOTE_E3, NOTE_G3,
+};
+
+
+int count = 0;
+touchButtons buttons[] = {TOUCH0, TOUCH1, TOUCH2, TOUCH3, TOUCH4};
+char buttonNR[] = "01234";
+int xCoordinate = 85;  
 
 void setup() {
-  
+  carrier.begin();
+  CARRIER_CASE = true;
+  Serial.begin(9600);
 
+  carrier.display.fillScreen(0x0000);
+  carrier.display.setCursor(40, 30); 
+  carrier.display.setTextSize(3); 
+  carrier.display.setTextColor(0xFFFF); 
+  carrier.display.println("Tryk på en knap"); 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
+  btnRegister();
 }
 
+void btnRegister() {
+  carrier.Buttons.update();
 
-void touchpage()
-{
-  carrier.display.fillScreen(0x0000);
-  carrier.display.setTextColor(0xFFFF);
-  carrier.display.setTextSize(3);
-  carrier.display.setCursor(44, 40);
-  carrier.display.print("Press all");
-  carrier.display.setCursor(24, 70);
-  carrier.display.print("the buttons");
-  carrier.display.setCursor(34, 120);
-  carrier.display.setTextSize(2);
-  carrier.display.print("Button touched:");
-  carrier.display.setTextSize(5);
-  carrier.display.setCursor(100, 180);
-  carrier.display.print("__");
-
-  bool buttonChecked[] = {false, false, false, false, false};
-  carrier.leds.fill(carrier.leds.Color(200, 0, 0), 0, 5);
-
-  carrier.leds.show();
-  while (!touchCheckCompleted)
-  {
-    carrier.display.fillRect(90, 170, 100, 60, 0x00);
-    carrier.display.setCursor(100, 180);
-    carrier.display.print("__");
-
-    // carrier.leds.show();
-    carrier.Buttons.update();
-
-    // Checks if new data are available
-    if (carrier.Buttons.onTouchDown(TOUCH0))
-    {
-      Serial.println("Touching Button 0");
-      carrier.display.fillRect(90, 160, 100, 60, 0x00);
-      carrier.display.setCursor(95, 170);
-      carrier.display.print("00");
-      buttonChecked[0] = true;
-      carrier.leds.setPixelColor(0, colorGreen);
-    }
-    if (carrier.Buttons.onTouchUp(TOUCH1))
-    {
-      Serial.println("Touching Button 1");
-      carrier.display.fillRect(90, 160, 100, 60, 0x00);
-      carrier.display.setCursor(95, 170);
-      carrier.display.print("01");
-      buttonChecked[1] = true;
-      carrier.leds.setPixelColor(1, colorGreen);
-    }
-    if (carrier.Buttons.getTouch(TOUCH2))
-    {
-      Serial.println("Touching Button 2");
-      carrier.display.fillRect(90, 160, 100, 60, 0x00);
-      carrier.display.setCursor(95, 170);
-      carrier.display.print("02");
-      buttonChecked[2] = true;
-      carrier.leds.setPixelColor(2, colorGreen);
-    }
-    if (carrier.Buttons.onTouchUp(TOUCH3))
-    {
-      Serial.println("Touching Button 3");
-      carrier.display.fillRect(90, 160, 100, 60, 0x00);
-      carrier.display.setCursor(95, 170);
-      carrier.display.print("03");
-      buttonChecked[3] = true;
-      carrier.leds.setPixelColor(3, colorGreen);
-    }
-    if (carrier.Buttons.onTouchDown(TOUCH4))
-    {
-      Serial.println("Touching Button 4");
-      carrier.display.fillRect(90, 160, 100, 60, 0x00);
-      carrier.display.setCursor(95, 170);
-      carrier.display.print("04");
-      buttonChecked[4] = true;
-      carrier.leds.setPixelColor(4, colorGreen);
-    }
-    carrier.leds.show();
-    delay(150);
-
-    if (buttonChecked[0] && buttonChecked[1] && buttonChecked[2] && buttonChecked[3] && buttonChecked[4])
-    {
-      delay(500);
-      carrier.leds.fill(carrier.leds.Color(0, 0, 0), 0, 5);
+  for (int i = 0; i < 5; i++) {
+    if (carrier.Buttons.onTouchDown(buttons[i])) {
+      carrier.display.setCursor(xCoordinate, 170);
+      carrier.display.print(buttonNR[i]);
+      carrier.leds.setPixelColor(i, colorRed);
       carrier.leds.show();
-      carrier.display.fillScreen(0x0000);
-      carrier.display.setTextColor(0xFFFF);
-      carrier.display.setTextSize(3);
-      carrier.display.setCursor(64, 40);
-      carrier.display.print("BUTTONS");
-      carrier.display.drawBitmap(70, 100, check, 100, 100, 0x1D10); //0x1DA086);
 
-      delay(1500);
-      touchCheckCompleted = true;
+      count++;
+      xCoordinate += 20;
+
+      if (count == 5) {
+        delay(1000);
+        carrier.leds.setPixelColor(i, colorGreen);
+        carrier.leds.show();
+        playMelody();
+        carrier.display.fillScreen(0x0000);
+        carrier.display.setCursor(60, 30); 
+        carrier.display.print("Tilykke");
+        carrier.display.setCursor(60, 60); 
+        carrier.display.print("Kom ind");
+        delay(5000);
+        carrier.leds.clear();
+        carrier.leds.show();
+      }
     }
   }
+
+  delay(500);
 }
 
+void playMelody() {
+  for (int thisNote = 0; thisNote < 8; thisNote++) {
+    int noteDuration = 1000 / noteDurations[thisNote]; // Access note duration
+    carrier.Buzzer.sound(finalMelody[thisNote]); // Play the note from the melody
+    delay(noteDuration);
+    int pauseBetweenNotes = noteDuration * 1;
+    delay(pauseBetweenNotes);
+    carrier.Buzzer.noSound();
+  }
+}
