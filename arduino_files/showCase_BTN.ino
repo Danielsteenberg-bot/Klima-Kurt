@@ -36,10 +36,13 @@ void setup() {
   Serial.begin(9600);
 
   carrier.display.fillScreen(0x0000);
-  carrier.display.setCursor(40, 30); 
+  carrier.display.setCursor(50, 60); 
   carrier.display.setTextSize(3); 
   carrier.display.setTextColor(0xFFFF); 
-  carrier.display.println("Tryk på en knap"); 
+  carrier.display.print("Tast en "); 
+  carrier.display.setCursor(50, 90); 
+  carrier.display.print("kode"); 
+
 }
 
 void loop() {
