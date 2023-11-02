@@ -12,21 +12,26 @@ uint32_t colorGreen = carrier.leds.Color(0, 200, 0);
 uint32_t colorBlue = carrier.leds.Color(0, 0, 200);
 
 
-int noteDurations[] = {
-  4, 4, 4, 4, 4, 2, 8, 8, 8, 8, 8, 4, 4, 4, 4, 4, 2, 8, 8, 8, 8, 8, 4, 4, 4, 4, 4,
-  2, 8, 8, 8, 8, 8, 4, 4, 4, 4, 4, 2, 8, 8, 8, 8, 8, 4, 4, 4, 4, 4, 2, 8, 8, 8, 8, 8,
-  4, 4, 4, 4, 4, 2, 8, 8, 8, 8, 8, 4, 4, 4, 4, 4, 2, 8, 8, 8, 8, 8, 4, 4, 4, 4, 4,
-  2, 8, 8, 8, 8, 8, 4, 4, 4, 4, 4, 2, 8, 8, 8, 8, 8, 4, 4, 4, 4, 4, 2, 8, 8, 8, 8, 8
-};
-
-
 int finalMelody[] = {
-  NOTE_E3, NOTE_G3, NOTE_A3, NOTE_B3, NOTE_G3, NOTE_E3, NOTE_G3, NOTE_FS3, NOTE_E3, NOTE_G3,
-  NOTE_A3, NOTE_B3, NOTE_A3, NOTE_G3, NOTE_E3, NOTE_A3, NOTE_B3, NOTE_C4, NOTE_D4, NOTE_B3,
-  NOTE_A3, NOTE_G3, NOTE_FS3, NOTE_G3, NOTE_A3, NOTE_B3, NOTE_C4, NOTE_D4, NOTE_E3, NOTE_G3,
-  NOTE_E3, NOTE_G3, NOTE_A3, NOTE_B3, NOTE_G3, NOTE_E3, NOTE_G3, NOTE_FS3, NOTE_E3, NOTE_G3,
-  NOTE_A3, NOTE_B3, NOTE_A3, NOTE_G3, NOTE_E3, NOTE_A3, NOTE_B3, NOTE_C4, NOTE_D4, NOTE_B3,
-  NOTE_A3, NOTE_G3, NOTE_FS3, NOTE_G3, NOTE_A3, NOTE_B3, NOTE_C4, NOTE_D4, NOTE_E3, NOTE_G3,
+  NOTE_A4,-4, NOTE_A4,-4, NOTE_A4,16, NOTE_A4,16, NOTE_A4,16, NOTE_A4,16, NOTE_F4,8, REST,8,
+  NOTE_A4,-4, NOTE_A4,-4, NOTE_A4,16, NOTE_A4,16, NOTE_A4,16, NOTE_A4,16, NOTE_F4,8, REST,8,
+  NOTE_A4,4, NOTE_A4,4, NOTE_A4,4, NOTE_F4,-8, NOTE_C5,16,
+
+  NOTE_A4,4, NOTE_F4,-8, NOTE_C5,16, NOTE_A4,2,//4
+  NOTE_E5,4, NOTE_E5,4, NOTE_E5,4, NOTE_F5,-8, NOTE_C5,16,
+  NOTE_A4,4, NOTE_F4,-8, NOTE_C5,16, NOTE_A4,2,
+  
+  NOTE_A5,4, NOTE_A4,-8, NOTE_A4,16, NOTE_A5,4, NOTE_GS5,-8, NOTE_G5,16, //7 
+  NOTE_DS5,16, NOTE_D5,16, NOTE_DS5,8, REST,8, NOTE_A4,8, NOTE_DS5,4, NOTE_D5,-8, NOTE_CS5,16,
+
+  NOTE_C5,16, NOTE_B4,16, NOTE_C5,16, REST,8, NOTE_F4,8, NOTE_GS4,4, NOTE_F4,-8, NOTE_A4,-16,//9
+  NOTE_C5,4, NOTE_A4,-8, NOTE_C5,16, NOTE_E5,2,
+
+  NOTE_A5,4, NOTE_A4,-8, NOTE_A4,16, NOTE_A5,4, NOTE_GS5,-8, NOTE_G5,16, //7 
+  NOTE_DS5,16, NOTE_D5,16, NOTE_DS5,8, REST,8, NOTE_A4,8, NOTE_DS5,4, NOTE_D5,-8, NOTE_CS5,16,
+
+  NOTE_C5,16, NOTE_B4,16, NOTE_C5,16, REST,8, NOTE_F4,8, NOTE_GS4,4, NOTE_F4,-8, NOTE_A4,-16,//9
+  NOTE_A4,4, NOTE_F4,-8, NOTE_C5,16, NOTE_A4,2,
 };
 
 
@@ -141,12 +146,32 @@ void printData() {
 
 
 void playMelody() {
-  for (int thisNote = 0; thisNote < 8; thisNote++) {
-    int noteDuration = 1000 / noteDurations[thisNote]; // Access note duration
-    carrier.Buzzer.sound(finalMelody[thisNote]); // Play the note from the melody
-    delay(noteDuration);
-    int pauseBetweenNotes = noteDuration * 1;
+  int thisNote = 0;
+  int noteDuration = 0;
+  int pauseBetweenNotes = 0;
+
+  
+  int notes = sizeof(finalMelody) / sizeof(finalMelody[0]) / 2;
+
+  
+  int tempo = 108;  
+
+  while (thisNote < notes * 2) {
+    int divider = finalMelody[thisNote + 1];
+    if (divider > 0) {
+      noteDuration = (60000 * 4) / tempo / divider;
+    } else if (divider < 0) {
+      noteDuration = (60000 * 4) / tempo / abs(divider);
+      noteDuration *= 1.5;
+    }
+
+    carrier.Buzzer.sound(finalMelody[thisNote]); 
+    delay(noteDuration * 0.9); 
+    carrier.Buzzer.noSound(); 
+
+    pauseBetweenNotes = noteDuration - (noteDuration * 0.9); 
     delay(pauseBetweenNotes);
-    carrier.Buzzer.noSound();
+
+    thisNote += 2; 
   }
 }
