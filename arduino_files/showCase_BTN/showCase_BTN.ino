@@ -1,17 +1,41 @@
+/* Libray includes */
 #include <Arduino_MKRIoTCarrier.h>
 #include <WiFiNINA.h>
+#include <ArduinoJson.h>
+#include <ArduinoMqttClient.h>
 
+/* Document includes */
 #include "visuals.h"
 #include "pitches.h" 
 #include "arduino_secrets.h"
 
+/* Init */
 MKRIoTCarrier carrier;
+WiFiSSLClient WiFiSSLClient;
+MqttClient mqttClient(WiFiSSLClient);
 
+/* Farver variabler */
 uint32_t colorRed = carrier.leds.Color(200, 0, 0);
 uint32_t colorGreen = carrier.leds.Color(0, 200, 0);
 uint32_t colorBlue = carrier.leds.Color(0, 0, 200);
 
 
+/* MQTT  VARIABLER */
+const char broker[] = "c2e79bd864f242dea67ba553e17b7e22.s2.eu.hivemq.cloud";
+int        port     = 8883;
+const char topic[]  = "test";
+
+/* Tidsvariabler til at sende data */
+const long interval = 1000;
+unsigned long previousMillis = 0;
+
+/* Json variable */
+String json;
+StaticJsonDocument<200> doc;
+
+
+
+/* Melodi variable */
 int finalMelody[] = {
   NOTE_A4,-4, NOTE_A4,-4, NOTE_A4,16, NOTE_A4,16, NOTE_A4,16, NOTE_A4,16, NOTE_F4,8, REST,8,
   NOTE_A4,-4, NOTE_A4,-4, NOTE_A4,16, NOTE_A4,16, NOTE_A4,16, NOTE_A4,16, NOTE_F4,8, REST,8,
@@ -34,12 +58,14 @@ int finalMelody[] = {
   NOTE_A4,4, NOTE_F4,-8, NOTE_C5,16, NOTE_A4,2,
 };
 
-
+/* Variabler til at holde inputs */
 int count = 0;
 touchButtons buttons[] = {TOUCH0, TOUCH1, TOUCH2, TOUCH3, TOUCH4};
 char buttonNR[] = "01234";
-int xCoordinate = 85;  
+int xCoordinate = 85;
+String code = "";  
 
+/* Variabler til at læse fra secrets.h */
 char ssid[] = SECRET_SSID;        
 char pass[] = SECRET_PASS;    
 int status = WL_IDLE_STATUS;
@@ -47,27 +73,41 @@ int status = WL_IDLE_STATUS;
 
 void setup() {
 
+carrier.begin();
+CARRIER_CASE = true;
 
-  carrier.begin();
-  CARRIER_CASE = true;
   Serial.begin(9600);
-  while (!Serial);
+  while (!Serial) {
+    ; 
+  }
 
-  while (status != WL_CONNECTED){
-    Serial.print("Attempting to connect to network: ");
-    Serial.println(ssid);
 
-    status = WiFi.begin(ssid, pass);
-
+  Serial.print("Attempting to connect to WPA SSID: ");
+  Serial.println(ssid);
+  while (WiFi.begin(ssid, pass) != WL_CONNECTED) {
+    Serial.print(".");
     delay(5000);
   }
 
-  Serial.println("---------------------");
-  printData();
-  Serial.println("---------------------");
+  Serial.println("You're connected to the network");
+  Serial.println();
 
-  
+  mqttClient.setUsernamePassword("Daniel", "Daniel16!");
+  Serial.print("Attempting to connect to the MQTT broker: ");
+  Serial.println(broker);
+
+  if (!mqttClient.connect(broker, port)) {
+    Serial.print("MQTT connection failed! Error code = ");
+    Serial.println(mqttClient.connectError());
+
+    while (1);
+  }
+
+  Serial.println("You're connected to the MQTT broker!");
+  Serial.println();
+
   defaultDisplay();
+
 }
 
 void loop() {
@@ -97,6 +137,7 @@ void btnRegister() {
     if (carrier.Buttons.onTouchDown(buttons[i])) {
       carrier.display.setCursor(xCoordinate, 170);
       carrier.display.print(buttonNR[i]);
+      code += String(buttonNR[i]);
       carrier.leds.setPixelColor(i, colorRed);
       carrier.leds.show();
       count++;
@@ -117,6 +158,16 @@ void btnRegister() {
         carrier.leds.show();
         count = 0;
         xCoordinate = 85;
+        doc["code"] = code;
+        serializeJson(doc, json);
+        serializeJsonPretty(doc, Serial);
+        Serial.print(json);
+
+        mqttClient.beginMessage(topic);
+        mqttClient.print(json);
+        mqttClient.endMessage();
+
+        code = "";
         defaultDisplay();
       }
     }
@@ -149,11 +200,9 @@ void playMelody() {
   int thisNote = 0;
   int noteDuration = 0;
   int pauseBetweenNotes = 0;
-
   
   int notes = sizeof(finalMelody) / sizeof(finalMelody[0]) / 2;
 
-  
   int tempo = 108;  
 
   while (thisNote < notes * 2) {
