@@ -144,7 +144,6 @@ void btnRegister() {
       xCoordinate += 20;
 
       if (count == 5) {
-        delay(1000);
         carrier.leds.fill(colorGreen, 0, 5);
         carrier.leds.show();
         playMelody();
@@ -153,7 +152,6 @@ void btnRegister() {
         carrier.display.print("Tilykke");
         carrier.display.setCursor(60, 60); 
         carrier.display.print("Kom ind");
-        delay(1000);
         carrier.leds.clear();
         carrier.leds.show();
         count = 0;
