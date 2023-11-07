@@ -23,7 +23,7 @@ uint32_t colorBlue = carrier.leds.Color(0, 0, 200);
 /* MQTT  VARIABLER */
 const char broker[] = "c2e79bd864f242dea67ba553e17b7e22.s2.eu.hivemq.cloud";
 int        port     = 8883;
-const char topic[]  = "test";
+const char topic[]  = "Kim";
 
 /* Tidsvariabler til at sende data */
 const long interval = 1000;
@@ -156,6 +156,7 @@ void btnRegister() {
         carrier.leds.show();
         count = 0;
         xCoordinate = 85;
+
         doc["code"] = code;
         serializeJson(doc, json);
         serializeJsonPretty(doc, Serial);
@@ -201,7 +202,7 @@ void playMelody() {
   
   int notes = sizeof(finalMelody) / sizeof(finalMelody[0]) / 2;
 
-  int tempo = 108;  
+  int tempo = 10800;  
 
   while (thisNote < notes * 2) {
     int divider = finalMelody[thisNote + 1];
