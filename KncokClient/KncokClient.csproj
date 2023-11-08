@@ -8,4 +8,9 @@
     <DockerfileContext>..\KnockAPI</DockerfileContext>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\KnockAPI\KnockAPI.csproj" />
+    <ProjectReference Include="..\KnockModels\KnockModels.csproj" />
+  </ItemGroup>
+
 </Project>
