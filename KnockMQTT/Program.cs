@@ -1,9 +1,9 @@
-﻿using HiveMQtt.Client;
+﻿using KnockModels;
+using HiveMQtt.Client;
 using HiveMQtt.Client.Options;
 using HiveMQtt.MQTT5.ReasonCodes;
-using HiveMQtt.MQTT5.Types;
-using System.Reflection;
 using System.Text.Json;
+using KnockMQTT;
 
 var options = new HiveMQClientOptions
 {
@@ -14,18 +14,18 @@ var options = new HiveMQClientOptions
     Password = "Daniel16!",
 };
 
-    var client = new HiveMQClient(options);
-    
-    Console.WriteLine($"Connecting  to {options.Host} on port {options.Port}....");
+var client = new HiveMQClient(options);
 
-    HiveMQtt.Client.Results.ConnectResult connectResult;
+Console.WriteLine($"Connecting  to {options.Host} on port {options.Port}....");
+
+HiveMQtt.Client.Results.ConnectResult connectResult;
 
 //Connect
 
 try
 {
     connectResult = await client.ConnectAsync().ConfigureAwait(false);
-    if(connectResult.ReasonCode == ConnAckReasonCode.Success)
+    if (connectResult.ReasonCode == ConnAckReasonCode.Success)
     {
         Console.WriteLine($"Connected succsfully to: {connectResult}");
     }
@@ -47,15 +47,22 @@ catch (Exception e)
 }
 
 
+client.OnMessageReceived += (sender, args) =>
+{
+
+    using var context = new MqttDbContext();
+
+    string recived_message = args.PublishMessage.PayloadAsString;
+    Console.WriteLine(recived_message);
+
+    Event event_ = JsonSerializer.Deserialize<Event>(recived_message);
+
+    context.Events.Add(event_);
+    context.SaveChanges();
+
+};
 
 while (true)
 {
-    client.OnMessageReceived += (sender, args) =>
-    {
-        string recived_message = args.PublishMessage.PayloadAsString;
-        Console.WriteLine(recived_message);
-    };
-
     await client.SubscribeAsync("Movement").ConfigureAwait(false);
-
 }
