@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "Ggcj0LngB5/yz2KQpRc5l0p4KmD/hft7yRLol6NqFRm1tmHRipH0n7BnD/lkOKjTP0MYj+pB/l64ufaKNrNwGg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\cbc10\\source\\repos\\HiveMQ\\HiveMQ\\HiveMQ.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\cbc10\\.nuget\\packages\\hivemqtt\\0.5.0\\hivemqtt.0.5.0.nupkg.sha512",
+    "C:\\Users\\cbc10\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\7.0.1\\microsoft.extensions.logging.abstractions.7.0.1.nupkg.sha512",
+    "C:\\Users\\cbc10\\.nuget\\packages\\nlog\\5.2.3\\nlog.5.2.3.nupkg.sha512",
+    "C:\\Users\\cbc10\\.nuget\\packages\\system.io.pipelines\\7.0.0\\system.io.pipelines.7.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
