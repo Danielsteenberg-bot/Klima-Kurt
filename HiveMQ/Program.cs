@@ -46,16 +46,17 @@ catch (Exception e)
     Environment.Exit(-1);
 }
 
+client.OnMessageReceived += (sender, args) =>
+{
+    string recived_message = args.PublishMessage.PayloadAsString;
+    Console.WriteLine(recived_message);
+};
+
+
+
 
 
 while (true)
 {
-    client.OnMessageReceived += (sender, args) =>
-    {
-        string recived_message = args.PublishMessage.PayloadAsString;
-        Console.WriteLine(recived_message);
-    };
-
     await client.SubscribeAsync("Movement").ConfigureAwait(false);
-
 }
