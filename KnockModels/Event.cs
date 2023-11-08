@@ -1,4 +1,4 @@
-﻿namespace KnockMQTT.Models
+﻿namespace KnockModels
 {
     public class Event : Common
     {

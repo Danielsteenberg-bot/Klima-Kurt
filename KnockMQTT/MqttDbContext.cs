@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using KnockMQTT.Models;
+using KnockModels;
 
 namespace KnockMQTT
 {

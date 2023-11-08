@@ -1,4 +1,4 @@
-﻿using KnockMQTT.Models;
+﻿using KnockModels;
 using HiveMQtt.Client;
 using HiveMQtt.Client.Options;
 using HiveMQtt.MQTT5.ReasonCodes;

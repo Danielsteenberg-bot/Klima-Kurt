@@ -22,6 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\KncokClient\KncokClient.csproj" />
+    <ProjectReference Include="..\KnockAPI\KnockAPI.csproj" />
     <ProjectReference Include="..\KnockModels\KnockModels.csproj" />
   </ItemGroup>
 
