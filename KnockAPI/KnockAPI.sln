@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnockAPI", "KnockAPI.csproj", "{115834D3-291E-477E-8D27-CD53977A5072}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KnockAPI", "KnockAPI.csproj", "{115834D3-291E-477E-8D27-CD53977A5072}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KncokClient", "..\KncokClient\KncokClient.csproj", "{9DB382F7-6103-439D-922E-8A07AC44AE87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KncokClient", "..\KncokClient\KncokClient.csproj", "{9DB382F7-6103-439D-922E-8A07AC44AE87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnockMQTT", "..\KnockMQTT\KnockMQTT.csproj", "{2C9708FB-BA3C-4006-A28F-CA888BC7E6F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KnockMQTT", "..\KnockMQTT\KnockMQTT.csproj", "{2C9708FB-BA3C-4006-A28F-CA888BC7E6F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnockModels", "..\KnockModels\KnockModels.csproj", "{EEC050CF-63C1-4A6A-B188-F5422D722CF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KnockModels", "..\KnockModels\KnockModels.csproj", "{EEC050CF-63C1-4A6A-B188-F5422D722CF4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3351CE2D-6E63-46B7-B775-4535B54810CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
