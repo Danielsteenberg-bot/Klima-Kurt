@@ -13,7 +13,6 @@
         public Common()
         {
             this.CreatedAt = DateTime.Now;
-            this.UpdatedAt = DateTime.Now;
         }
 
     }
