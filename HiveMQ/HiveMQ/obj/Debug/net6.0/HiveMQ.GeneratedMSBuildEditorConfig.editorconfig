@@ -8,4 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = HiveMQ
-build_property.ProjectDir = C:\Users\cbc10\source\repos\HiveMQ\HiveMQ\
+build_property.ProjectDir = c:\Users\cbc10\OneDrive\Dokumenter\GitHub\Knock-Knock-Shield-3000\HiveMQ\HiveMQ\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
