@@ -172,7 +172,7 @@ void btnRegister() {
     }
   }
 
-  delay(500);
+  delay(600);
 }
 
 
